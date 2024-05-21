@@ -8,8 +8,15 @@ export class CourseService {
   constructor(private prisma: PrismaService){}
 
   async create(createCourseDto: CreateCourseDto) {
+    const {title, studentIds} = createCourseDto;
+    
     return this.prisma.course.create({
-      data: createCourseDto,
+      data: {
+        title,
+        students:{
+          connect: studentIds.map((id) => ({id})),
+        }
+      }
     });
   }
 
